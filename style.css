@@ -1,0 +1,173 @@
+/* Version: 1.0.0 */
+
+/* General Styles */
+:root {
+    --black: #000000;
+    --white: #ffffff;
+    --red: #e5202b;
+    --near-black: #0c0c0c;
+    --hover-red: #ff4d4d;
+    --spacing-sm: 0.625rem;
+    --spacing-md: 1.25rem;
+    --spacing-lg: 2rem;
+    --btn-width: 13rem;
+    --btn-height: 3.5rem;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: var(--black);
+    font-family: 'Poppins', Arial, Helvetica, sans-serif;
+    color: var(--white);
+    text-rendering: optimizeLegibility;
+}
+
+/* Main Container Styles */
+.container {
+    text-align: center;
+    padding: var(--spacing-md);
+}
+
+/* Header Styles */
+h1 {
+    font-size: clamp(2rem, 5vw, 3.75rem);
+    font-weight: 900;
+    font-style: italic;
+    margin-bottom: var(--spacing-sm);
+}
+
+.subtitle {
+    font-size: clamp(0.8rem, 2vw, 1.2rem);
+    font-weight: 500;
+    margin-bottom: var(--spacing-lg);
+}
+
+/* Social Links Styles */
+.social-links {
+    margin: var(--spacing-md) 0;
+}
+
+.social-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--btn-width);
+    height: var(--btn-height);
+    margin: var(--spacing-sm);
+    padding: 1rem 2rem;
+    background-color: var(--white);
+    color: var(--near-black);
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    border-radius: 0;
+    transition: opacity 0.2s ease;
+    cursor: pointer;
+    will-change: opacity;
+}
+
+@supports (clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%)) {
+    .social-btn {
+        clip-path: polygon(1.125rem 0%, 100% 0%, calc(100% - 1.125rem) 100%, 0% 100%);
+    }
+}
+
+.social-btn.youtube-btn {
+    background-color: var(--red);
+    color: var(--white);
+}
+
+.social-btn:hover {
+    opacity: 0.85;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .social-btn {
+        transition: none;
+    }
+}
+
+/* Footer Styles */
+.email {
+    font-size: clamp(0.7rem, 1.5vw, 0.9rem);
+    margin-top: var(--spacing-lg);
+}
+
+.email a {
+    color: var(--red);
+    text-decoration: none;
+}
+
+.email a:hover {
+    color: var(--hover-red);
+}
+
+/* Responsive Styles */
+@media (max-width: 1024px) {
+    .social-btn {
+        display: block;
+        width: calc(100% - 1rem);
+        margin: var(--spacing-sm) 0.5rem;
+        padding: 1rem 2rem;
+    }
+    .email {
+        font-size: clamp(0.75rem, 1.5vw, 1rem);
+    }
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: clamp(1.5rem, 4vw, 2rem);
+    }
+    .subtitle {
+        font-size: clamp(0.75rem, 1.8vw, 1rem);
+    }
+    .social-btn {
+        width: calc(100% - 1rem);
+        margin: var(--spacing-sm) 0.5rem;
+        padding: 1rem 2rem;
+    }
+    .email {
+        font-size: clamp(0.75rem, 1.5vw, 1rem);
+    }
+}
+
+@media (max-width: 320px) {
+    h1 {
+        font-size: clamp(1.2rem, 3.5vw, 1.5rem);
+    }
+    .subtitle {
+        font-size: clamp(0.6rem, 1.5vw, 0.8rem);
+    }
+    .social-btn {
+        width: calc(100% - 1rem);
+        height: 2.5rem;
+        margin: var(--spacing-sm) 0.5rem;
+        padding: 0.5rem 1rem;
+        font-size: 0.75rem;
+    }
+    .email {
+        font-size: clamp(0.625rem, 1.2vw, 0.875rem);
+    }
+}

@@ -535,7 +535,7 @@ h1:hover {
     position: relative;
     -webkit-animation: fadeIn 1s ease-out 1.5s forwards;
     -moz-animation: fadeIn 1s ease-out 1.5s forwards;
-    animation: fadeIn 1s ease-out 1.5s forwards;
+    animation: fadeIn 1s ease-out forwards;
     opacity: 0;
     will-change: opacity;
 }

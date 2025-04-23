@@ -1,10 +1,50 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
     <meta name="description" content="The official website of Mohammad Ahmadi Akbari. Find the latest content and support your favorite creator.">
     <meta name="author" content="Mohammad Ahmadi Akbari">
@@ -29,13 +69,17 @@
     {
         "@context": "https://schema.org",
         "@type": "Person",
+        "@id": "https://mohammad.today/#person",
         "name": "Mohammad Ahmadi Akbari",
-        "jobTitle": "Tech Insights & Tutorials",
+        "jobTitle": "Tech Content Creator",
         "url": "https://mohammad.today/",
         "image": "https://mohammad.today/profile.webp",
-        "description": "Tech Insights and Tutorials",
-        "knowsAbout": ["Technology", "Tech Insights", "Tech Tips", "Tech Tutorials", "Tech"],
-        "alumniOf": "National University of Skills",
+        "description": "Mohammad Ahmadi Akbari shares tech insights and tutorials on YouTube, Telegram, Instagram, and X.",
+        "knowsAbout": ["Technology", "Tech Tutorials", "Content Creation", "Tech Tips"],
+        "alumniOf": {
+            "@type": "EducationalOrganization",
+            "name": "National University of Skills"
+        },
         "sameAs": [
             "https://www.youtube.com/@MohammadToday",
             "https://t.me/MohammadToday",
@@ -45,35 +89,64 @@
     }
     </script>
 
-    <meta name="theme-color" content="#e5202b">
+    <meta name="theme-color" content="#1F2023">
     <title>Mohammad Today | Mohammad Ahmadi Akbari</title>
 
     <link rel="dns-prefetch" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;900&display=swap" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Courier+Prime:wght@400;700&display=swap">
     <link rel="stylesheet" href="style.css">
 
     <link rel="icon" href="/favicon.png" type="image/png">
     <link rel="apple-touch-icon" href="/apple-touch-icon.webp" sizes="180x180">
 </head>
 <body>
+    <div class="vintage-frame"></div>
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+    
     <main class="container">
+        <div class="typewriter-line" aria-hidden="true">
+            <span>TOP SECRET</span>
+            <span></span>
+        </div>
+
         <header>
             <h1 aria-label="Mohammad Today - Tech Insights and Tutorials">Mohammad Today</h1>
             <h2 class="subtitle" aria-label="Tech Insights and Tutorials by Mohammad Ahmadi Akbari">Tech Insights & Tutorials</h2>
         </header>
 
         <nav class="social-links" role="navigation">
-            <a href="https://www.youtube.com/@MohammadToday" target="_blank" rel="noopener noreferrer" class="social-btn youtube-btn" aria-label="Follow Mohammad Ahmadi Akbari on YouTube">YouTube</a>
-            <a href="https://t.me/MohammadToday" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Follow Mohammad Ahmadi Akbari on Telegram">Telegram</a>
-            <a href="https://www.instagram.com/mohammadtodays" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Follow Mohammad Ahmadi Akbari on Instagram">Instagram</a>
-            <a href="https://x.com/MohammadTodays" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Follow Mohammad Ahmadi Akbari on X (Twitter)">X</a>
+            <a href="https://www.youtube.com/@MohammadToday" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Follow Mohammad Ahmadi Akbari on YouTube">
+                <span class="btn-text">YouTube</span>
+                <span class="btn-hover-text" aria-hidden="true">YouTube</span>
+            </a>
+            <a href="https://t.me/MohammadToday" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Follow Mohammad Ahmadi Akbari on Telegram">
+                <span class="btn-text">Telegram</span>
+                <span class="btn-hover-text" aria-hidden="true">Telegram</span>
+            </a>
+            <a href="https://www.instagram.com/mohammadtodays" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Follow Mohammad Ahmadi Akbari on Instagram">
+                <span class="btn-text">Instagram</span>
+                <span class="btn-hover-text" aria-hidden="true">Instagram</span>
+            </a>
+            <a href="https://x.com/MohammadTodays" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Follow Mohammad Ahmadi Akbari on X (Twitter)">
+                <span class="btn-text">X</span>
+                <span class="btn-hover-text" aria-hidden="true">X</span>
+            </a>
         </nav>
 
+        <div class="floating-text" aria-hidden="true">
+            <div class="floating-text-item">TECH</div>
+            <div class="floating-text-item">INSIGHTS</div>
+            <div class="floating-text-item">TUTORIALS</div>
+        </div>
+
         <footer class="email" role="contentinfo">
-            For business inquiries, contact <a href="mailto:business@mohammad.today?subject=Business%20Inquiry" rel="noopener noreferrer" aria-label="Email Mohammad Ahmadi Akbari for business inquiries">business@mohammad.today</a>
+            <span class="typing-effect">For business inquiries, contact <span class="email-address"></span></span>
         </footer>
     </main>
+
+    <script src="script.js" defer></script>
 </body>
 </html>
